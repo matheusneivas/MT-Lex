@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MT Lex - Assistente Jurídico Inteligente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="20" cy="80" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: containerSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes containerSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 3.2em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        h1::after {
+            content: '⚖️';
+            position: absolute;
+            top: -10px;
+            right: -40px;
+            font-size: 0.6em;
+            opacity: 0.7;
+        }
+
+        .instruction {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #4a5568;
+            font-size: 1.2em;
+            line-height: 1.6;
+            font-weight: 500;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow:
+                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 10px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        textarea::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 10px 25px rgba(102, 126, 234, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        button:hover:not(:disabled) {
+            box-shadow:
+                0 15px 35px rgba(102, 126, 234, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        button:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        button:active:not(:disabled) {
+        }
+
+        button:disabled {
+            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 5px 15px rgba(156, 163, 175, 0.2);
+            opacity: 0.7;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            color: #2563eb;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            display: none;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-left: 6px solid #667eea;
+            border-radius: 20px;
+            box-shadow:
+                0 10px 25px rgba(102, 126, 234, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .result h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+
+        .result h2::before {
+            content: '✨ ';
+            margin-right: 8px;
+        }
+
+        .result-content {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            color: #374151;
+        }
+
+        .topics-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .topic-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 16px;
+            box-shadow:
+                0 4px 15px rgba(102, 126, 234, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .topic-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            transform-origin: bottom;
+        }
+
+        .topic-item:hover {
+            border-color: #667eea;
+            box-shadow:
+                0 8px 25px rgba(102, 126, 234, 0.2),
+                0 0 0 1px rgba(102, 126, 234, 0.3);
+        }
+
+        .topic-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .topic-item.loading {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .topic-expansion {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 12px;
+            display: none;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+        }
+
+        .topic-expansion.show {
+            display: block;
+            animation: slideDown 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                max-height: 1000px;
+            }
+        }
+
+        .expansion-content {
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            color: #6b7280;
+            border: none;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            top: 8px;
+            right: 40px;
+            z-index: 10;
+            line-height: 1;
+            box-shadow: none;
+        }
+
+
+
+        .copy-button.copied {
+            color: #ffffff;
+            background: #10b981 !important;
+        }
+
+        .close-button {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            color: #6b7280;
+            border: none;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            line-height: 1;
+            box-shadow: none;
+        }
+
+     
+
+
+        .click-hint {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            pointer-events: none;
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .topic-item:hover .click-hint {
+            opacity: 1;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-color: #667eea;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .topic-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 800;
+            font-size: 14px;
+            margin-right: 16px;
+            min-width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .topic-text {
+            color: #2d3748;
+            font-size: 17px;
+            line-height: 1.6;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0 10px;
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            textarea {
+                height: 250px;
+                padding: 16px;
+            }
+
+            .topic-item {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .topic-text {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MT Lex</h1>
+        
+        <p class="instruction">
+            🤖 Assistente Jurídico Inteligente MT Lex<br>
+            Cole seu texto jurídico no campo abaixo e descubra como nossa IA pode aprimorar suas teses.
+        </p>
+
+        <textarea id="inputText" placeholder="📝 Cole aqui o texto da sua tese jurídica e descubra como ela pode ser aprimorada pela inteligência artificial..."></textarea>
+
+        <button id="generateBtn" onclick="generateThesis()">🚀 Processar com MT Lex</button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>MT Lex analisando sua tese...</p>
+        </div>
+
+        <div class="result" id="result">
+            <h2>Análise MT Lex:</h2>
+            <div class="result-content" id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // !!!! CONFIGURAÇÃO IMPORTANTE - COLOQUE SUA URL DE WEBHOOK AQUI !!!!
+        const webhookUrl = 'https://neivan8n.site/webhook/tese';
+        const topicWebhookUrl = 'https://neivan8n.site/webhook/desenvolve';
+
+        /**
+         * Função principal que processa o texto da tese através do webhook
+         */
+        async function generateThesis() {
+            // 1. Captura os elementos necessários da interface
+            const inputText = document.getElementById('inputText').value.trim();
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+
+            // 2. Validação: verifica se o usuário inseriu texto
+            if (!inputText) {
+                alert('Por favor, insira um texto antes de continuar.');
+                return;
+            }
+
+            // 3. Preparação da interface: desabilita botão e mostra loading
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Aguarde, processando...';
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                // 4. Faz a requisição POST para o webhook
+                console.log("Iniciando requisição para o webhook...");
+                console.log("Enviando:", { tese_inicial: inputText });
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "tese_inicial": inputText
+                    })
+                });
+
+                // 5. Verifica se a resposta da rede foi bem-sucedida
+                console.log("Resposta recebida com status:", response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
+
+                // 6. Converte a resposta para texto (ponto crítico conforme solicitado)
+                const responseText = await response.text();
+                console.log("Texto recebido:", responseText);
+
+                // 7. Processa e exibe o resultado
+                displayThesisTopics(responseText, resultContent);
+                result.style.display = 'block';
+                result.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                // 8. Captura QUALQUER erro (rede, HTTP, parsing, etc.)
+                console.log("Erro capturado:", error);
+                
+                // 9. Exibe mensagem de erro clara e útil para o usuário
+                let errorMessage = 'Ocorreu um erro: ';
+                
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += 'Não foi possível conectar ao servidor. Verifique sua conexão com a internet e se a URL do webhook está correta.';
+                } else if (error.message.includes('HTTP')) {
+                    errorMessage += `O servidor retornou um erro: ${error.message}`;
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                errorMessage += '\n\n🔧 Verificações necessárias:\n';
+                errorMessage += '- A URL do webhook está configurada corretamente?\n';
+                errorMessage += '- O servidor está funcionando?\n';
+                errorMessage += '- Há conexão com a internet?';
+
+                // 10. Mostra o erro na div de resultado
+                resultContent.textContent = errorMessage;
+                result.style.display = 'block';
+                result.scrollIntoView({ behavior: 'smooth' });
+
+            } finally {
+                // 11. Sempre executa: remove loading e reabilita botão
+                loading.style.display = 'none';
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Gerar Nova Tese';
+            }
+        }
+
+        /**
+         * Processa e exibe os tópicos da tese de forma organizada
+         */
+        function displayThesisTopics(responseText, resultContent) {
+            try {
+                // Tenta fazer parse do JSON
+                const topics = JSON.parse(responseText);
+
+                // Verifica se é um array válido
+                if (Array.isArray(topics) && topics.length > 0) {
+                    // Cria HTML estruturado para os tópicos
+                    let htmlContent = '<div class="topics-list">';
+
+                    topics.forEach((topic, index) => {
+                        const topicText = topic.topic_text || topic.text || topic.titulo || topic.topico || '';
+                        if (topicText.trim()) {
+                            htmlContent += `
+                                <div class="topic-item" onclick="expandTopic(${index}, '${topicText.trim().replace(/'/g, "\\'")}', this, event)">
+                                    <div class="topic-header">
+                                        <span class="topic-number">${index + 1}.</span>
+                                        <span class="topic-text">${topicText.trim()}</span>
+                                    </div>
+                                    <div class="topic-expansion" id="expansion-${index}">
+                                        <div class="expansion-content" id="content-${index}"></div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    htmlContent += '</div>';
+                    resultContent.innerHTML = htmlContent;
+                } else {
+                    // Se não é array ou está vazio, exibe texto simples
+                    resultContent.textContent = responseText;
+                }
+
+            } catch (error) {
+                // Se falhar o parse JSON, exibe como texto simples
+                console.log("Não foi possível fazer parse do JSON, exibindo como texto:", error);
+                resultContent.textContent = responseText;
+            }
+        }
+
+        /**
+         * Expande um tópico específico chamando o webhook de desenvolvimento
+         */
+        async function expandTopic(topicIndex, topicText, buttonElement, event) {
+            // Impede que o clique propague para outros elementos
+            if (event) {
+                event.stopPropagation();
+            }
+
+            // Encontra o elemento pai do tópico
+            const topicElement = buttonElement.closest('.topic-item');
+            const expansionDiv = document.getElementById(`expansion-${topicIndex}`);
+            const contentDiv = document.getElementById(`content-${topicIndex}`);
+
+            // Se já está expandido, não faz nada (só fecha pelo botão X)
+            if (expansionDiv.classList.contains('show')) {
+                return;
+            }
+
+            // Se já tem conteúdo, apenas mostra
+            if (contentDiv.innerHTML.trim()) {
+                expansionDiv.classList.add('show');
+                return;
+            }
+
+            // Adiciona estado de loading
+            topicElement.classList.add('loading');
+            contentDiv.innerHTML = '<div style="text-align: center; color: #6b7280;"><div class="spinner" style="margin: 0 auto 10px; width: 20px; height: 20px;"></div>MT Lex desenvolvendo tópico...</div>';
+            expansionDiv.classList.add('show');
+
+            try {
+                console.log(`Desenvolvendo tópico: ${topicText}`);
+
+                const response = await fetch(topicWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "topico": topicText,
+                        "indice": topicIndex + 1
+                    })
+                });
+
+                console.log("Resposta do desenvolvimento recebida com status:", response.status);
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+                }
+
+                const responseText = await response.text();
+                console.log("Desenvolvimento recebido:", responseText);
+
+                // Exibe o conteúdo desenvolvido com botões de copiar e fechar
+                contentDiv.innerHTML = `
+                    <button class="close-button" onclick="closeTopic(${topicIndex}, event)">
+                        <span style="transform: translateY(0px) translateX(1px); display: inline-block;">✕</span>
+                    </button>
+                    <button class="copy-button" onclick="copyToClipboard('${topicText.replace(/'/g, "\\'")}', \`${responseText.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, this, event)">
+                        <span style="transform: translateY(1px); display: inline-block;">⧉</span>
+                    </button>
+                    <div class="expansion-content">${responseText.replace(/\n/g, '<br>')}</div>
+                `;
+
+
+            } catch (error) {
+                console.log("Erro ao desenvolver tópico:", error);
+
+                let errorMessage = 'Erro ao desenvolver o tópico: ';
+
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += 'Não foi possível conectar ao servidor.';
+                } else if (error.message.includes('HTTP')) {
+                    errorMessage += `O servidor retornou um erro: ${error.message}`;
+                } else {
+                    errorMessage += error.message;
+                }
+
+                contentDiv.innerHTML = `<div style="color: #dc2626;">${errorMessage}</div>`;
+
+            } finally {
+                // Remove estado de loading
+                topicElement.classList.remove('loading');
+            }
+        }
+
+        /**
+         * Fecha o desenvolvimento de um tópico
+         */
+        function closeTopic(topicIndex, event) {
+            // Impede que o clique propague para outros elementos
+            if (event) {
+                event.stopPropagation();
+            }
+
+            const expansionDiv = document.getElementById(`expansion-${topicIndex}`);
+
+            // Recolhe a expansão
+            if (expansionDiv) {
+                expansionDiv.classList.remove('show');
+            }
+        }
+
+        /**
+         * Copia o desenvolvimento do tópico para a área de transferência
+         */
+        async function copyToClipboard(topicTitle, content, buttonElement, event) {
+            // Impede que o clique no botão propague para o elemento pai
+            if (event) {
+                event.stopPropagation();
+            }
+
+            try {
+                // Texto formatado para copiar
+                const textToCopy = `${topicTitle}\n\n${content}`;
+
+                // Usa a API moderna de clipboard se disponível
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(textToCopy);
+                } else {
+                    // Fallback para navegadores mais antigos
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-999999px';
+                    textArea.style.top = '-999999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    textArea.remove();
+                }
+
+                // Feedback visual
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = '<span style="transform: translateY(1px); display: inline-block;">✓</span>';
+                buttonElement.classList.add('copied');
+
+                // Restaura o botão após 2 segundos
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                    buttonElement.classList.remove('copied');
+                }, 2000);
+
+            } catch (error) {
+                console.error('Erro ao copiar:', error);
+
+                // Feedback de erro
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = '✗';
+
+                setTimeout(() => {
+                    buttonElement.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+
+        /**
+         * Função para ajustar automaticamente o tamanho do textarea
+         */
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.max(120, textarea.scrollHeight) + 'px';
+        }
+
+        /**
+         * Controla o estado do botão baseado no conteúdo do textarea
+         */
+        document.getElementById('inputText').addEventListener('input', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            // Só habilita o botão se há texto no campo
+            generateBtn.disabled = this.value.trim().length === 0;
+
+            // Ajusta o tamanho automaticamente
+            autoResize(this);
+        });
+
+        // Inicialização: botão começa desabilitado
+        document.getElementById('generateBtn').disabled = true;
+    </script>
+</body>
+</html>
