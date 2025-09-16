@@ -107,17 +107,18 @@
 
         textarea {
             width: 100%;
-            height: 350px;
-            padding: 24px;
+            min-height: 120px;
+            padding: 16px;
             border: 2px solid rgba(102, 126, 234, 0.2);
             border-radius: 16px;
             font-size: 16px;
             font-family: inherit;
-            resize: vertical;
+            resize: none;
             margin-bottom: 30px;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
+            overflow: hidden;
         }
 
         textarea:focus {
@@ -126,7 +127,6 @@
             box-shadow:
                 0 0 0 4px rgba(102, 126, 234, 0.1),
                 0 10px 25px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
         }
 
         textarea::placeholder {
@@ -166,7 +166,6 @@
         }
 
         button:hover:not(:disabled) {
-            transform: translateY(-3px);
             box-shadow:
                 0 15px 35px rgba(102, 126, 234, 0.4),
                 0 0 0 1px rgba(255, 255, 255, 0.3);
@@ -177,7 +176,6 @@
         }
 
         button:active:not(:disabled) {
-            transform: translateY(-1px);
         }
 
         button:disabled {
@@ -265,6 +263,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .topic-header {
@@ -291,7 +290,6 @@
             box-shadow:
                 0 8px 25px rgba(102, 126, 234, 0.2),
                 0 0 0 1px rgba(102, 126, 234, 0.3);
-            transform: translateY(-3px);
         }
 
         .topic-item:hover::before {
@@ -338,75 +336,60 @@
         }
 
         .copy-button {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            color: #6b7280;
             border: none;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 400;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.3);
+            transition: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
-            width: fit-content;
+            width: 24px;
+            height: 24px;
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 8px;
+            right: 40px;
             z-index: 10;
-            min-width: 20px;
-            text-align: center;
+            line-height: 1;
+            box-shadow: none;
         }
 
-        .copy-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
 
-        .copy-button:active {
-            transform: translateY(0);
-        }
 
         .copy-button.copied {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            color: #ffffff;
+            background: #10b981 !important;
         }
 
         .close-button {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            color: #6b7280;
             border: none;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 400;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3);
+            transition: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 2px;
-            width: fit-content;
+            width: 24px;
+            height: 24px;
             position: absolute;
-            top: 12px;
-            right: 200px;
+            top: 8px;
+            right: 8px;
             z-index: 10;
-            min-width: 20px;
-            text-align: center;
+            line-height: 1;
+            box-shadow: none;
         }
 
-        .close-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
+     
 
-        .close-button:active {
-            transform: translateY(0);
-        }
 
         .click-hint {
             position: absolute;
@@ -416,25 +399,22 @@
             color: #667eea;
             font-size: 11px;
             font-weight: 600;
-            opacity: 1;
+            opacity: 0.8;
             transition: all 0.3s ease;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
             padding: 4px 8px;
             border-radius: 8px;
             border: 1px solid rgba(102, 126, 234, 0.3);
-            cursor: pointer;
+            pointer-events: none;
             width: auto;
             white-space: nowrap;
         }
 
-        .click-hint:hover {
+        .topic-item:hover .click-hint {
+            opacity: 1;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             border-color: #667eea;
             transform: translateY(-50%) scale(1.05);
-        }
-
-        .click-hint:active {
-            transform: translateY(-50%) scale(0.95);
         }
 
         .topic-number {
@@ -620,11 +600,10 @@
                         const topicText = topic.topic_text || topic.text || topic.titulo || topic.topico || '';
                         if (topicText.trim()) {
                             htmlContent += `
-                                <div class="topic-item">
+                                <div class="topic-item" onclick="expandTopic(${index}, '${topicText.trim().replace(/'/g, "\\'")}', this, event)">
                                     <div class="topic-header">
                                         <span class="topic-number">${index + 1}.</span>
                                         <span class="topic-text">${topicText.trim()}</span>
-                                        <button class="click-hint" id="develop-btn-${index}" onclick="expandTopic(${index}, '${topicText.trim().replace(/'/g, "\\'")}', this, event)">desenvolver</button>
                                     </div>
                                     <div class="topic-expansion" id="expansion-${index}">
                                         <div class="expansion-content" id="content-${index}"></div>
@@ -662,25 +641,14 @@
             const expansionDiv = document.getElementById(`expansion-${topicIndex}`);
             const contentDiv = document.getElementById(`content-${topicIndex}`);
 
-            // Se já está expandido, apenas recolhe
+            // Se já está expandido, não faz nada (só fecha pelo botão X)
             if (expansionDiv.classList.contains('show')) {
-                expansionDiv.classList.remove('show');
-                // Mostra o botão de desenvolver novamente
-                const developButton = document.getElementById(`develop-btn-${topicIndex}`);
-                if (developButton) {
-                    developButton.style.display = 'block';
-                }
                 return;
             }
 
             // Se já tem conteúdo, apenas mostra
             if (contentDiv.innerHTML.trim()) {
                 expansionDiv.classList.add('show');
-                // Esconde o botão de desenvolver
-                const developButton = document.getElementById(`develop-btn-${topicIndex}`);
-                if (developButton) {
-                    developButton.style.display = 'none';
-                }
                 return;
             }
 
@@ -715,19 +683,14 @@
                 // Exibe o conteúdo desenvolvido com botões de copiar e fechar
                 contentDiv.innerHTML = `
                     <button class="close-button" onclick="closeTopic(${topicIndex}, event)">
-                        ❌ Fechar
+                        <span style="transform: translateY(0px) translateX(1px); display: inline-block;">✕</span>
                     </button>
                     <button class="copy-button" onclick="copyToClipboard('${topicText.replace(/'/g, "\\'")}', \`${responseText.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, this, event)">
-                        📋 Copiar
+                        <span style="transform: translateY(1px); display: inline-block;">⧉</span>
                     </button>
                     <div class="expansion-content">${responseText.replace(/\n/g, '<br>')}</div>
                 `;
 
-                // Esconde o botão de desenvolver
-                const developButton = document.getElementById(`develop-btn-${topicIndex}`);
-                if (developButton) {
-                    developButton.style.display = 'none';
-                }
 
             } catch (error) {
                 console.log("Erro ao desenvolver tópico:", error);
@@ -760,16 +723,10 @@
             }
 
             const expansionDiv = document.getElementById(`expansion-${topicIndex}`);
-            const developButton = document.getElementById(`develop-btn-${topicIndex}`);
 
             // Recolhe a expansão
             if (expansionDiv) {
                 expansionDiv.classList.remove('show');
-            }
-
-            // Mostra o botão de desenvolver novamente
-            if (developButton) {
-                developButton.style.display = 'block';
             }
         }
 
@@ -805,7 +762,7 @@
 
                 // Feedback visual
                 const originalText = buttonElement.innerHTML;
-                buttonElement.innerHTML = '✅ Copiado!';
+                buttonElement.innerHTML = '<span style="transform: translateY(1px); display: inline-block;">✓</span>';
                 buttonElement.classList.add('copied');
 
                 // Restaura o botão após 2 segundos
@@ -819,12 +776,20 @@
 
                 // Feedback de erro
                 const originalText = buttonElement.innerHTML;
-                buttonElement.innerHTML = '❌ Erro ao copiar';
+                buttonElement.innerHTML = '✗';
 
                 setTimeout(() => {
                     buttonElement.innerHTML = originalText;
                 }, 2000);
             }
+        }
+
+        /**
+         * Função para ajustar automaticamente o tamanho do textarea
+         */
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.max(120, textarea.scrollHeight) + 'px';
         }
 
         /**
@@ -834,6 +799,9 @@
             const generateBtn = document.getElementById('generateBtn');
             // Só habilita o botão se há texto no campo
             generateBtn.disabled = this.value.trim().length === 0;
+
+            // Ajusta o tamanho automaticamente
+            autoResize(this);
         });
 
         // Inicialização: botão começa desabilitado
