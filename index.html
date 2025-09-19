@@ -66,13 +66,13 @@
         }
 
         .input-wrapper {
-            display: flex;
-            align-items: flex-end;
+            position: relative;
             background-color: #2f2f2f;
             border: 1px solid #424242;
             border-radius: 12px;
             padding: 12px;
             transition: border-color 0.2s ease;
+            min-height: 60px;
         }
 
         .input-wrapper:focus-within {
@@ -80,7 +80,7 @@
         }
 
         textarea {
-            flex: 1;
+            width: 100%;
             background: transparent;
             border: none;
             outline: none;
@@ -88,13 +88,73 @@
             font-size: 16px;
             font-family: inherit;
             color: #ececf1;
-            max-height: 200px;
+            max-height: 300px;
             min-height: 24px;
             line-height: 1.5;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #424242 transparent;
+            padding-right: 85px;
+            box-sizing: border-box;
+        }
+
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: #424242;
+            border-radius: 3px;
+        }
+
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         textarea::placeholder {
             color: #9ca3af;
+        }
+
+        .button-group {
+            position: absolute;
+            bottom: 12px;
+            right: 25px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+        }
+
+        #improveBtn {
+            background-color: #e7f3ff;
+            color: #1877f2;
+            border: 1px solid #1877f2;
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+            width: 36px;
+            height: 36px;
+        }
+
+        #improveBtn:hover:not(:disabled) {
+            background-color: #d0e8ff;
+        }
+
+        #improveBtn:disabled {
+            background-color: #f5f5f5;
+            color: #9ca3af;
+            border-color: #d1d5db;
+            cursor: not-allowed;
+            opacity: 0.5;
         }
 
         .send-button {
@@ -104,7 +164,6 @@
             border-radius: 6px;
             padding: 8px 12px;
             cursor: pointer;
-            margin-left: 8px;
             transition: background-color 0.2s;
             display: flex;
             align-items: center;
@@ -158,6 +217,104 @@
             margin-bottom: 16px;
             font-size: 1.2em;
             font-weight: 600;
+        }
+
+        #analiseContainer {
+            margin-bottom: 32px;
+            padding: 24px;
+            background-color: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #analiseContainer::before {
+            content: "🧠";
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: #fafafa;
+            padding: 0 8px;
+            font-size: 20px;
+        }
+
+        #analiseContainer h3 {
+            color: #1f2937;
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        #analiseContainer h3::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #10a37f, #0d8a6b);
+            border-radius: 2px;
+        }
+
+        #analiseContainer > div {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid #10a37f;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        #analiseContainer h4 {
+            color: #10a37f;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #analiseContainer h4::before {
+            content: "▶";
+            font-size: 0.8em;
+            color: #10a37f;
+        }
+
+        #analiseContainer p {
+            color: #374151;
+            line-height: 1.7;
+            margin: 0;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        #analiseContainer ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        #analiseContainer li {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        #analiseContainer li::before {
+            content: "❓";
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .result-content {
@@ -351,6 +508,54 @@
             .topic-text {
                 font-size: 14px;
             }
+
+            #analiseContainer {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            #analiseContainer::before {
+                top: -10px;
+                left: 20px;
+                font-size: 18px;
+            }
+
+            #analiseContainer h3 {
+                font-size: 1.1em;
+                margin-bottom: 20px;
+            }
+
+            #analiseContainer > div {
+                padding: 12px;
+                margin-bottom: 16px;
+            }
+
+            #analiseContainer h4 {
+                font-size: 0.85em;
+                margin: 0 0 8px 0;
+            }
+
+            #analiseContainer p {
+                font-size: 14px;
+                line-height: 1.6;
+                text-align: left;
+            }
+
+            #analiseContainer li {
+                font-size: 14px;
+                margin-bottom: 8px;
+                padding-left: 18px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            #improveBtn {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
@@ -367,9 +572,14 @@
         <div class="input-area">
             <div class="input-wrapper">
                 <textarea id="inputText" placeholder="Cole aqui o texto da sua tese jurídica..."></textarea>
-                <button class="send-button" id="generateBtn" onclick="generateThesis()">
-                    ↑
-                </button>
+                <div class="button-group">
+                    <button id="improveBtn" onclick="improvePrompt()" title="Melhorar Prompt">
+                        ✨
+                    </button>
+                    <button class="send-button" id="generateBtn" onclick="generateThesis()">
+                        ↑
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -380,6 +590,21 @@
 
         <div class="result" id="result">
             <h2>Análise MT Lex:</h2>
+            <div id="analiseContainer" style="display: none;">
+                <h3>Análise do Prompt</h3>
+                <div>
+                    <h4>Sugestões de Melhora</h4>
+                    <p id="sugestoesMelhora"></p>
+                </div>
+                <div>
+                    <h4>Lacunas Identificadas</h4>
+                    <p id="lacunasIdentificadas"></p>
+                </div>
+                <div>
+                    <h4>Perguntas Complementares</h4>
+                    <ul id="perguntasComplementares"></ul>
+                </div>
+            </div>
             <div class="result-content" id="resultContent"></div>
         </div>
     </div>
@@ -388,6 +613,142 @@
         // !!!! CONFIGURAÇÃO IMPORTANTE - COLOQUE SUA URL DE WEBHOOK AQUI !!!!
         const webhookUrl = 'https://neivan8n.site/webhook/tese';
         const topicWebhookUrl = 'https://neivan8n.site/webhook/desenvolve';
+        /**
+         * Função para melhorar o prompt usando IA
+         */
+        async function improvePrompt() {
+            // URL do webhook para melhorar prompt
+            const improveWebhookUrl = 'https://neivan8n.site/webhook/melhorar-prompt';
+
+            // Teste básico de conectividade primeiro
+            console.log('Testando conectividade básica...');
+            try {
+                const testResponse = await fetch(improveWebhookUrl, { method: 'GET', mode: 'no-cors' });
+                console.log('Teste GET realizado:', testResponse);
+            } catch (testError) {
+                console.log('Erro no teste GET:', testError);
+            }
+
+            // Pega o texto atual da textarea
+            const teseInput = document.getElementById('inputText');
+            const currentText = teseInput.value.trim();
+
+            // Verifica se o campo não está vazio
+            if (!currentText) {
+                console.log('Campo vazio - operação cancelada');
+                return;
+            }
+
+            // Captura elementos para gerenciar estado da UI
+            const improveBtn = document.getElementById('improveBtn');
+            const generateBtn = document.getElementById('generateBtn');
+
+            // Gerencia o estado da UI: Desabilita ambos os botões
+            improveBtn.disabled = true;
+            generateBtn.disabled = true;
+
+            // Muda o símbolo do botão para dar feedback ao usuário
+            improveBtn.textContent = '⏳';
+
+            try {
+                console.log('Enviando requisição para melhorar prompt...');
+                console.log('Texto:', currentText);
+
+                // Codifica o texto para URL
+                const encodedText = encodeURIComponent(currentText);
+                const urlWithParams = `${improveWebhookUrl}?prompt_to_improve=${encodedText}`;
+
+                console.log('URL final:', urlWithParams);
+
+                let response;
+                let usedNoCors = false;
+
+                try {
+                    // Tentativa 1: Com CORS (permite ler a resposta)
+                    console.log('Tentando com CORS...');
+                    response = await fetch(urlWithParams, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    console.log('CORS funcionou! Status:', response.status);
+
+                    if (response.ok) {
+                        // Conseguiu com CORS - pode ler a resposta
+                        const improvedPrompt = await response.text();
+
+                        // Verifica se a resposta não está vazia
+                        if (improvedPrompt.trim() === '') {
+                            console.log('Resposta vazia do n8n');
+                            improveBtn.textContent = '❌';
+                            setTimeout(() => {
+                                improveBtn.textContent = '✨';
+                            }, 2000);
+                            return;
+                        }
+
+                        // Atualiza automaticamente o campo
+                        teseInput.value = improvedPrompt.trim();
+                        autoResize(teseInput);
+
+                        // Feedback visual no botão (sem alert)
+                        improveBtn.textContent = '✅';
+                        setTimeout(() => {
+                            improveBtn.textContent = '✨';
+                        }, 2000);
+
+                        console.log('Prompt atualizado com sucesso!');
+                        return; // Sucesso completo!
+                    }
+
+                } catch (corsError) {
+                    console.log('CORS falhou, tentando no-cors:', corsError);
+
+                    // Tentativa 2: Com no-cors (fallback)
+                    response = await fetch(urlWithParams, {
+                        method: 'POST',
+                        mode: 'no-cors'
+                    });
+
+                    usedNoCors = true;
+                    console.log('Usando no-cors - resposta não pode ser lida');
+                }
+
+                // Se chegou aqui, usou no-cors ou CORS falhou
+                if (usedNoCors || (response && response.type === 'opaque')) {
+                    console.log('Requisição enviada com no-cors - resposta não pode ser lida');
+                    improveBtn.textContent = '📤';
+                    setTimeout(() => {
+                        improveBtn.textContent = '✨';
+                    }, 3000);
+                } else {
+                    console.log('Resposta CORS recebida mas com erro:', response.status);
+                    improveBtn.textContent = '⚠️';
+                    setTimeout(() => {
+                        improveBtn.textContent = '✨';
+                    }, 2000);
+                }
+
+            } catch (error) {
+                // Tratamento de Erros: Exibe alert para o usuário
+                console.error('Erro detalhado ao melhorar prompt:', error);
+                console.error('Tipo do erro:', error.name);
+                console.error('Mensagem:', error.message);
+
+                improveBtn.textContent = '❌';
+                setTimeout(() => {
+                    improveBtn.textContent = '✨';
+                }, 2000);
+
+            } finally {
+                // No bloco finally: Reabilita ambos os botões e volta o texto
+                improveBtn.disabled = false;
+                generateBtn.disabled = false;
+                improveBtn.textContent = '✨';
+            }
+        }
 
         /**
          * Função principal que processa o texto da tese através do webhook
@@ -434,12 +795,12 @@
                     throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
                 }
 
-                // 6. Converte a resposta para texto (ponto crítico conforme solicitado)
-                const responseText = await response.text();
-                console.log("Texto recebido:", responseText);
+                // 6. Converte a resposta para JSON
+                const data = await response.json();
+                console.log("Dados recebidos:", data);
 
                 // 7. Processa e exibe o resultado
-                displayThesisTopics(responseText, resultContent);
+                displayThesisTopics(JSON.stringify(data), resultContent);
                 result.style.display = 'block';
                 result.scrollIntoView({ behavior: 'smooth' });
 
@@ -482,41 +843,99 @@
         function displayThesisTopics(responseText, resultContent) {
             try {
                 // Tenta fazer parse do JSON
-                const topics = JSON.parse(responseText);
+                const data = JSON.parse(responseText);
 
-                // Verifica se é um array válido
-                if (Array.isArray(topics) && topics.length > 0) {
-                    // Cria HTML estruturado para os tópicos
-                    let htmlContent = '<div class="topics-list">';
+                // Verifica se tem a nova estrutura com analysis e topics
+                if (data.analysis && data.topics) {
+                    // Exibe a análise do prompt
+                    displayAnalysis(data.analysis);
 
-                    topics.forEach((topic, index) => {
-                        const topicText = topic.topic_text || topic.text || topic.titulo || topic.topico || '';
-                        if (topicText.trim()) {
-                            htmlContent += `
-                                <div class="topic-item" onclick="expandTopic(${index}, '${topicText.trim().replace(/'/g, "\\'")}', this, event)">
-                                    <div class="topic-header">
-                                        <span class="topic-number">${index + 1}.</span>
-                                        <span class="topic-text">${topicText.trim()}</span>
-                                    </div>
-                                    <div class="topic-expansion" id="expansion-${index}">
-                                        <div class="expansion-content" id="content-${index}"></div>
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    });
+                    // Exibe os tópicos
+                    displayTopics(data.topics, resultContent);
+                }
+                // Verifica se é um array válido (formato antigo)
+                else if (Array.isArray(data) && data.length > 0) {
+                    // Esconde a análise para formato antigo
+                    document.getElementById('analiseContainer').style.display = 'none';
 
-                    htmlContent += '</div>';
-                    resultContent.innerHTML = htmlContent;
+                    // Processa como array de tópicos (formato antigo)
+                    displayTopics(data, resultContent);
                 } else {
                     // Se não é array ou está vazio, exibe texto simples
+                    document.getElementById('analiseContainer').style.display = 'none';
                     resultContent.textContent = responseText;
                 }
 
             } catch (error) {
                 // Se falhar o parse JSON, exibe como texto simples
                 console.log("Não foi possível fazer parse do JSON, exibindo como texto:", error);
+                document.getElementById('analiseContainer').style.display = 'none';
                 resultContent.textContent = responseText;
+            }
+        }
+
+        /**
+         * Exibe a análise do prompt
+         */
+        function displayAnalysis(analysis) {
+            const analiseContainer = document.getElementById('analiseContainer');
+            const sugestoesMelhora = document.getElementById('sugestoesMelhora');
+            const lacunasIdentificadas = document.getElementById('lacunasIdentificadas');
+            const perguntasComplementares = document.getElementById('perguntasComplementares');
+
+            // Preenche sugestões de melhora
+            sugestoesMelhora.textContent = analysis.sugestoes_melhora || 'Não disponível';
+
+            // Preenche lacunas identificadas
+            lacunasIdentificadas.textContent = analysis.lacunas_identificadas || 'Não disponível';
+
+            // Preenche perguntas complementares
+            perguntasComplementares.innerHTML = '';
+            if (analysis.perguntas_complementares && Array.isArray(analysis.perguntas_complementares)) {
+                analysis.perguntas_complementares.forEach(pergunta => {
+                    const li = document.createElement('li');
+                    li.textContent = pergunta;
+                    perguntasComplementares.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'Não disponível';
+                perguntasComplementares.appendChild(li);
+            }
+
+            // Mostra o container da análise
+            analiseContainer.style.display = 'block';
+        }
+
+        /**
+         * Exibe os tópicos
+         */
+        function displayTopics(topics, resultContent) {
+            if (Array.isArray(topics) && topics.length > 0) {
+                // Cria HTML estruturado para os tópicos
+                let htmlContent = '<div class="topics-list">';
+
+                topics.forEach((topic, index) => {
+                    const topicText = topic.topic_text || topic.text || topic.titulo || topic.topico || '';
+                    if (topicText.trim()) {
+                        htmlContent += `
+                            <div class="topic-item" onclick="expandTopic(${index}, '${topicText.trim().replace(/'/g, "\\'")}', this, event)">
+                                <div class="topic-header">
+                                    <span class="topic-number">${index + 1}.</span>
+                                    <span class="topic-text">${topicText.trim()}</span>
+                                </div>
+                                <div class="topic-expansion" id="expansion-${index}">
+                                    <div class="expansion-content" id="content-${index}"></div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+
+                htmlContent += '</div>';
+                resultContent.innerHTML = htmlContent;
+            } else {
+                resultContent.textContent = 'Nenhum tópico disponível';
             }
         }
 
@@ -682,16 +1101,21 @@
          */
         function autoResize(textarea) {
             textarea.style.height = 'auto';
-            textarea.style.height = Math.max(120, textarea.scrollHeight) + 'px';
+            const newHeight = Math.min(Math.max(24, textarea.scrollHeight), 300);
+            textarea.style.height = newHeight + 'px';
         }
 
         /**
-         * Controla o estado do botão baseado no conteúdo do textarea
+         * Controla o estado dos botões baseado no conteúdo do textarea
          */
         document.getElementById('inputText').addEventListener('input', function() {
             const generateBtn = document.getElementById('generateBtn');
-            // Só habilita o botão se há texto no campo
-            generateBtn.disabled = this.value.trim().length === 0;
+            const improveBtn = document.getElementById('improveBtn');
+            const hasText = this.value.trim().length > 0;
+
+            // Só habilita os botões se há texto no campo
+            generateBtn.disabled = !hasText;
+            improveBtn.disabled = !hasText;
 
             // Ajusta o tamanho automaticamente
             autoResize(this);
@@ -708,8 +1132,9 @@
             }
         });
 
-        // Inicialização: botão começa desabilitado
+        // Inicialização: botões começam desabilitados
         document.getElementById('generateBtn').disabled = true;
+        document.getElementById('improveBtn').disabled = true;
 
     </script>
 </body>
